@@ -20,6 +20,15 @@ public class INPUT_EVENT_LSITENER : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
+        {
+            UnityEngine.Debug.Log("Right Hand Grip Pressed");
+        }
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch))
+        {
+            UnityEngine.Debug.Log("Left Hand Grip Pressed");
+        }
+
         //UnityEngine.Debug.Log(mB1.ToInputAction().triggered);
         var state = OVRPlugin.GetControllerState4((uint)OVRInput.Controller.Hands);
         bool menuGesture = (state.Buttons & (uint)OVRInput.RawButton.Start) > 0;

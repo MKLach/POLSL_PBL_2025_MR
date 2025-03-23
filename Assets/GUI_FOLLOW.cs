@@ -5,6 +5,8 @@ public class GUI_FOLLOW : MonoBehaviour
     public Transform player;
     public Vector3 offset;
     public Vector3 rotationOffset;
+    public Collider leftColllider;
+    public Collider rightColllider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,6 +19,8 @@ public class GUI_FOLLOW : MonoBehaviour
     {
         if (player == null) return;
         recalculate();
+
+
 
         //Debug.Log(player.position);
     }
@@ -33,4 +37,44 @@ public class GUI_FOLLOW : MonoBehaviour
         transform.Rotate(-rotationOffset);
 
     }
+    float alpha_og = 0;
+
+    public void toggleVisibility() {
+
+        
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject obj = transform.GetChild(i).gameObject;
+            CanvasGroup cg = obj.GetComponent<CanvasGroup>();
+            if (cg) {
+                if (cg.alpha != 0)
+                {
+                    alpha_og = cg.alpha;
+                    cg.alpha = 0f;
+                }
+                else
+                {
+                    cg.alpha = alpha_og;
+                }
+                continue;
+            }
+
+            MeshRenderer mr = obj.GetComponent<MeshRenderer>();
+
+            if (mr) {
+                mr.enabled = !mr.enabled;
+                Collider col = obj.GetComponent<Collider>();
+
+                col.enabled = !col.enabled;
+            }
+
+
+
+
+        }
+
+
+    }
+
 }
