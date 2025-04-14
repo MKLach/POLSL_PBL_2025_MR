@@ -7,11 +7,12 @@ public class GUI_FOLLOW : MonoBehaviour
     public Vector3 rotationOffset;
     public Collider leftColllider;
     public Collider rightColllider;
+    private bool lockFollowing = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -26,6 +27,7 @@ public class GUI_FOLLOW : MonoBehaviour
     }
 
     public void recalculate() {
+        if (lockFollowing) return;
         transform.position = player.position + player.forward * offset.z +
                             player.right * offset.x +
                             player.up * offset.y;
@@ -41,7 +43,7 @@ public class GUI_FOLLOW : MonoBehaviour
 
     public void toggleVisibility() {
 
-        
+
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -63,10 +65,10 @@ public class GUI_FOLLOW : MonoBehaviour
             MeshRenderer mr = obj.GetComponent<MeshRenderer>();
 
             if (mr) {
-                mr.enabled = !mr.enabled;
-                Collider col = obj.GetComponent<Collider>();
+                //mr.enabled = !mr.enabled;
+                //Collider col = obj.GetComponent<Collider>();
 
-                col.enabled = !col.enabled;
+                //col.enabled = !col.enabled;
             }
 
 
@@ -74,7 +76,17 @@ public class GUI_FOLLOW : MonoBehaviour
 
         }
 
-
     }
+    public void lockGUIFollowing(){
+        this.lockFollowing = true;   
+    }
+
+    public void unlockGUIFollowing()
+    {
+        this.lockFollowing = false;
+    }
+
+
+
 
 }

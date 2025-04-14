@@ -1,11 +1,12 @@
+using System.Collections;
 using System.Diagnostics;
 using System.Threading;
-using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class INPUT_EVENT_LSITENER : MonoBehaviour
+public class INPUT_EVENT_LSITENER_INSTRUCTION : MonoBehaviour
 {
     public GameObject parent_ui;
     public InputActionReference mB1;
@@ -13,24 +14,32 @@ public class INPUT_EVENT_LSITENER : MonoBehaviour
     public GameObject rightHand;
     private FistDetector lFistDetector;
     private FistDetector rFistDetector;
-    public GameObject gesture_debug;
+    public CurrentTask task;
 
+    public NotificationSystem notificationSystem;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
        lFistDetector = leftHand.GetComponent<FistDetector>();
        rFistDetector = rightHand.GetComponent<FistDetector>();
+        
     }
 
     private bool _menuPrev = false;
     private bool was_lhand_fist = false;
     private bool was_rhand_fist = false;
     private float timeout = 0;
+    private float timeoutLike = 0;
+
+    private bool was_rhand_like = false;
+
     // Update is called once per frame
     void Update()
     {
         bool isLHandFist = lFistDetector.isFistGesture();
         bool isRHandFist = rFistDetector.isFistGesture();
+
 
         if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
         {
@@ -48,16 +57,10 @@ public class INPUT_EVENT_LSITENER : MonoBehaviour
         bool lFistStateChanged = !was_lhand_fist && isLHandFist && timeout + .5 < (Time.time);
         bool rFistStateChanged = !was_rhand_fist && isRHandFist && timeout + .5 < (Time.time);
 
-        gesture_debug.GetComponentInChildren<TextMeshProUGUI>().text =
-            rFistDetector.getThumb() + "\n" +
-            rFistDetector.getIndex() + "\n" +
-            rFistDetector.getMiddleb() + "\n" +
-            rFistDetector.getRing() + "\n" +
-            rFistDetector.getPinky();
 
 
-        if (mB1.ToInputAction().WasPressedThisFrame() || menuGesture && !_menuPrev || lFistStateChanged || rFistStateChanged) {
-            timeout = Time.time;
+        if (mB1.ToInputAction().WasPressedThisFrame() || menuGesture && !_menuPrev) {
+            
             UnityEngine.Debug.Log("Menu button pressed!");
 	        
             GUI_FOLLOW G_F = parent_ui.GetComponent<GUI_FOLLOW>();
@@ -65,16 +68,36 @@ public class INPUT_EVENT_LSITENER : MonoBehaviour
             G_F.recalculate();
             G_F.toggleVisibility();
             //parent_ui.SetActive(!parent_ui.activeSelf);
+        }
 
+        if (rFistStateChanged || lFistStateChanged) {
+            timeout = Time.time;
+            notificationSystem.notify("Task Completed", "" + (CurrentInstructionSingleton.Instance.getCurrentTaskIndex()+1) + "/"+ CurrentInstructionSingleton.Instance.instructionDTO.tasks.Count, 2);
+            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone();
 
-            for (int i = 0; i < parent_ui.transform.childCount; i++) { 
-                //parent_ui.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = !parent_ui.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled;
-               // UnityEngine.Debug.Log("Child!");
+            if (CurrentInstructionSingleton.Instance.hasBeenCompleted())
+            {
+                task.allDone();
+                StartCoroutine(WaitAndLoadScene(5f));
             }
+            else { 
+                task.nextTask(CurrentInstructionSingleton.Instance.getCurrentTask());
+            }
+
 
         }
 
+        was_rhand_fist = isRHandFist;
         was_lhand_fist = isLHandFist;
         _menuPrev = menuGesture;
+    }
+
+    private IEnumerator WaitAndLoadScene(float waitTime)
+    {
+
+        yield return new WaitForSeconds(waitTime);
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(1);
     }
 }

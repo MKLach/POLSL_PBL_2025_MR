@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class scriptv2 : MonoBehaviour
+public class scriptv2Instruction : MonoBehaviour
 {
     public GameObject parent_ui;
     public ChildTriggerForwarder handTrigger;
@@ -13,7 +13,6 @@ public class scriptv2 : MonoBehaviour
         handTrigger.OnAnyTriggerEnter += (id,other) => OnTriggerEnter2(id,other); //Debug.Log("Hand touched: " + other.name);
         handTrigger.OnAnyTriggerExit += (id,other) => OnTriggerExit2(id,other);   // Debug.Log("Hand stopped touching: " + other.name);
         timeout = Time.time;
-        ignoreTime = Time.time + 1;
     }
     float timeout;
 
@@ -53,7 +52,7 @@ public class scriptv2 : MonoBehaviour
         }
         return false;
     }
-    public float ignoreTime;
+
     // Wykrywanie wejœcia w trigger
     private void OnTriggerEnter2(int id, Collider other)
     {
@@ -65,9 +64,7 @@ public class scriptv2 : MonoBehaviour
         Debug.Log("Obiekt " + other.gameObject.name + " wszed³ w trigger!");
         GUI_FOLLOW G_F = parent_ui.GetComponent<GUI_FOLLOW>();
         if (other.gameObject.name == "FOLLOW_LOCKER") {
-            if (ignoreTime < Time.time) {
-                G_F.lockGUIFollowing();
-            }
+            G_F.lockGUIFollowing();
         }
 
         if (other.gameObject.name == "Cube (1)") {
@@ -77,14 +74,13 @@ public class scriptv2 : MonoBehaviour
             G_F.toggleVisibility();
             
         }
-        
+
         Button button = other.GetComponent<Button>();
         if (button != null) {
-            
             if (timeout + 1 > Time.time) return;
-            //notificationSystem.notify(other.gameObject.name, "EventC " + (button.onClick.GetPersistentEventCount()), 5);
+
             timeout = Time.time;
-            
+            notificationSystem.notify(other.gameObject.name, "Button pressed", 5);
 
             button.onClick.Invoke();
 
@@ -96,7 +92,7 @@ public class scriptv2 : MonoBehaviour
     // Wykrywanie wyjœcia z triggera
     private void OnTriggerExit2(int id, Collider other)
     {
-        //notificationSystem.notify(other.gameObject.name, "Trigger exit", 5);
+        notificationSystem.notify(other.gameObject.name, "Trigger exit", 5);
         if (isAnyOneElseTouching(id)) { touchers[id] = false; return; }
 
         touchers[id] = false;
