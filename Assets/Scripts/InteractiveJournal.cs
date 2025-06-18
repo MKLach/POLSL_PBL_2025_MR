@@ -194,6 +194,8 @@ public class InteractiveJournal : MonoBehaviour
 
     public void ShowInstructionDetail(InstructionDTO ins)
     {
+        Debug.Log(ins);
+        Debug.Log(CurrentInstructionSingleton.Instance);
 
         CurrentInstructionSingleton.Instance.setInstruction(ins);
         detailPageTitleText.text = ins.title;

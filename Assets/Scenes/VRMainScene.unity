@@ -644,8 +644,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3674210304
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.85882354}
+    rgba: 3791716096
+  m_fontColor: {r: 0, g: 1, b: 0, a: 0.8862745}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2631,7 +2631,7 @@ Transform:
   m_GameObject: {fileID: 1591110959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.026, y: -0.45, z: 0.42}
+  m_LocalPosition: {x: 0.652, y: -0.771, z: 0.42}
   m_LocalScale: {x: 0.075, y: 0.075, z: 0.075}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3048,6 +3048,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 832513637671455134, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832513637671455134, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 832513637671455134, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1430815297566000705, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -3062,19 +3074,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1595755220867265749, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_fontColor.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1595755220867265749, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_fontColor.r
-      value: 0
+      value: 0.13207841
       objectReference: {fileID: 0}
     - target: {fileID: 1595755220867265749, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 3674210304
+      value: 3674275618
       objectReference: {fileID: 0}
     - target: {fileID: 1595755220867265749, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533888875480286170, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533888875480286170, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533888875480286170, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533888875480286170, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 3707830016
       objectReference: {fileID: 0}
     - target: {fileID: 2533888875480286170, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3167,6 +3195,14 @@ PrefabInstance:
     - target: {fileID: 3594720624088217064, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_Colors.m_ColorMultiplier
       value: 3.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 3918114353195160219, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4809459326501333116, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5632316267300358058, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_fontColor.b
@@ -3724,7 +3760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 0.69411767}
+  m_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

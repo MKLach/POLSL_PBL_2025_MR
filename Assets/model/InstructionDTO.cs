@@ -9,6 +9,7 @@ namespace Assets.model
 {
     public class InstructionDTO
     {
+        public int id;
         public string shortTitle;
         public string title;
 
@@ -20,6 +21,10 @@ namespace Assets.model
             this.title = title;
             this.shortTitle = shortTitle;
             tasks = new List<TaskDTO>();
+        }
+
+        public void addTask(string shortTitle, string description) { 
+            tasks.Add(new TaskDTO(shortTitle, shortTitle, description));    
         }
 
     }

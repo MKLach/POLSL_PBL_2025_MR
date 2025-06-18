@@ -12,8 +12,7 @@ namespace Assets.model
         public string shortTitle;
         public string title;
         public string description;
-        public List<TaskDTO> subTasks; // For nested tasks
-
+        
         public TaskDTO() { }
 
         public TaskDTO(string shortTitle, string title, string description)
@@ -21,7 +20,7 @@ namespace Assets.model
             this.title = title;
             this.shortTitle = shortTitle;
             this.description = description;
-            this.subTasks = new List<TaskDTO>();
+            
         }
     }
 }

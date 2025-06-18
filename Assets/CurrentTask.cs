@@ -31,7 +31,14 @@ public class CurrentTask : MonoBehaviour
         
         this.desc.text = (instructionSingleton.getCurrentTaskIndex()+1) +". " + task.title + "\n" + task.description;
     }
+    public void prevTask()
+    {
+        if (instructionSingleton.getCurrentTaskIndex() == 0) return;
+        instructionSingleton.goPreviousTask();
+        TaskDTO task = instructionSingleton.getCurrentTask();
 
+        this.desc.text = (instructionSingleton.getCurrentTaskIndex() + 1) + ". " + task.title + "\n" + task.description;
+    }
     public void allDone() {
         desc.text = "Good job!\nAll task succesfully completed!\nReturning to main in 5 seconds!";
 

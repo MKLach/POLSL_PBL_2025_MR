@@ -25,7 +25,7 @@ public class TaskButton : MonoBehaviour
         {
             buttonText.text = $"{number}. {text}";
         }
-
+        Debug.Log(data);
         //GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(() => controller.ShowInstructionDetail(data));
     }

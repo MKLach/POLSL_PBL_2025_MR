@@ -56,7 +56,8 @@ public class INPUT_EVENT_LSITENER_INSTRUCTION : MonoBehaviour
         
         bool lFistStateChanged = !was_lhand_fist && isLHandFist && timeout + .5 < (Time.time);
         bool rFistStateChanged = !was_rhand_fist && isRHandFist && timeout + .5 < (Time.time);
-
+        bool keyboardM  = Input.GetKeyDown(KeyCode.M) && timeout + .5 < (Time.time);
+        bool keyboardJ = Input.GetKeyDown(KeyCode.J) && timeout + .5 < (Time.time);
 
 
         if (mB1.ToInputAction().WasPressedThisFrame() || menuGesture && !_menuPrev) {
@@ -70,7 +71,7 @@ public class INPUT_EVENT_LSITENER_INSTRUCTION : MonoBehaviour
             //parent_ui.SetActive(!parent_ui.activeSelf);
         }
 
-        if (rFistStateChanged || lFistStateChanged) {
+        if (rFistStateChanged || lFistStateChanged || keyboardM) {
             timeout = Time.time;
             notificationSystem.notify("Task Completed", "" + (CurrentInstructionSingleton.Instance.getCurrentTaskIndex()+1) + "/"+ CurrentInstructionSingleton.Instance.instructionDTO.tasks.Count, 2);
             CurrentInstructionSingleton.Instance.setCurrentTaskAsDone();
@@ -85,6 +86,12 @@ public class INPUT_EVENT_LSITENER_INSTRUCTION : MonoBehaviour
             }
 
 
+        }
+
+        if (keyboardJ) {
+            timeout = Time.time;
+            notificationSystem.notify("Previous Task", "Going back to previous task!", 2);
+            task.prevTask();
         }
 
         was_rhand_fist = isRHandFist;
