@@ -7348,6 +7348,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guiFollow: {fileID: 98232718}
   st: 0
+  mc: {fileID: 1311115439}
+  l: {fileID: 1245233077}
+  r: {fileID: 1518975749}
 --- !u!1 &1174087537
 GameObject:
   m_ObjectHideFlags: 0

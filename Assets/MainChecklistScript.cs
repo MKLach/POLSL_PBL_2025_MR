@@ -4,9 +4,15 @@ public class MainChecklistScript : MonoBehaviour
 {
     public GUI_FOLLOW_Initialization guiFollow;
     public float st;
+
+    public Transform mc;
+    public Transform l;
+    public Transform r;
+
     void Start()
     {
         st = Time.time;
+        CurrentInstructionSingleton.Instance.setTransformReferences(mc, l, r);
     }
 
     void Update()

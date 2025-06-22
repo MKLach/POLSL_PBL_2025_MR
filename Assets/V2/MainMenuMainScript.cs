@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static NetworkDataSingleton;
 using UnityEngine.SceneManagement;
+using Assets.markdown;
 
 public class MainMenuMainScript : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class MainMenuMainScript : MonoBehaviour
         }
 
         lpc.addOption("Disable Gestrues");
+        lpc.addOption("Purge checklists");
         lpc.addOption("Hide Menu");
         lpc.GetComponent<RectTransform>().localPosition = new Vector3(-2.4f, -1.75f, 0);
 
@@ -94,6 +96,14 @@ public class MainMenuMainScript : MonoBehaviour
     public void onMainMenuSelect(GameObject listPanel, int index) {
 
         if (NetworkDataSingleton.Instance.getChecklists().Count + 1 == index)
+        {
+            if (root.GetText(index) != "Purged! (restart req.)") {
+                MarkdownManager.purgeAllChecklists();
+                root.setText(index, "Purged! (restart req.)");
+            }
+            
+        } 
+        else if (NetworkDataSingleton.Instance.getChecklists().Count + 2 == index)
         {
             hide();
         }

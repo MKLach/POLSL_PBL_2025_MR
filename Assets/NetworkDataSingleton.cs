@@ -10,6 +10,7 @@ using System.Collections;
 using System.IO;
 using System.Net;
 using UnityEngine.SceneManagement;
+using System.Text;
 
 public class NetworkDataSingleton : MonoBehaviour
 {
@@ -210,9 +211,7 @@ public class NetworkDataSingleton : MonoBehaviour
         this.baseUrl= url;
         this.user= user;
 
-        initializeChecklistProvider(new InMemoryChecklistProvider());
-
-
+        initializeChecklistProvider(new ExternalServerChecklistProvider(baseUrl));
 
         _thread = new Thread(NetworkTask);
         _thread.Start();
@@ -224,7 +223,7 @@ public class NetworkDataSingleton : MonoBehaviour
         println("Using " + checklistProvider);
         this.checklistProvider = checklistProvider;
 
-        this.checklistProvider.signalDownload();
+        StartCoroutine(this.checklistProvider.signalDownload());
         this.waitingForChecklists = true;
     }
     void OnApplicationQuit()
@@ -238,10 +237,48 @@ public class NetworkDataSingleton : MonoBehaviour
 
     public void startNoServer(string currentUser)
     {
-        initializeChecklistProvider(new InMemoryChecklistProvider());
+        this.user = currentUser;
+        initializeChecklistProvider(user == "__SAFE_MODE__" ? new InMemoryChecklistProvider() : new SavedChecklistProvider());
 
 
 
 
+    }
+
+    public IEnumerator SendChecklistLog(string jsonPayload)
+    {
+        string serverURL = baseUrl; // Replace with actual address
+        string url = serverURL + "/checklist";
+
+        // Create request
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        request.Method = "POST";
+        request.ContentType = "application/json";
+
+        // Prepare JSON payload
+        // string jsonPayload = "{\"name\":\"Alex\",\"score\":42}";
+        byte[] byteData = Encoding.UTF8.GetBytes(jsonPayload);
+
+        // Write data to request stream
+        using (Stream requestStream = request.GetRequestStream())
+        {
+            requestStream.Write(byteData, 0, byteData.Length);
+        }
+
+        Debug.Log("POST req to: " + url);
+
+        // Get the response
+        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        {
+            Debug.Log("Response Code: " + response.StatusCode);
+
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                string jsonResponse = reader.ReadToEnd();
+                Debug.Log("Response Body: " + jsonResponse);
+            }
+        }
+
+        yield return null;
     }
 }

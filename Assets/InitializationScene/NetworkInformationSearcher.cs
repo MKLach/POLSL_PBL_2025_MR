@@ -19,6 +19,8 @@ using NUnit.Framework;
 using Assets.Network.JSON;
 using Oculus.Interaction;
 using Unity.VisualScripting;
+using Assets.Responses;
+using Assets.markdown;
 
 public class NetworkInformationSearcher : MonoBehaviour
 {
@@ -89,15 +91,30 @@ public class NetworkInformationSearcher : MonoBehaviour
         Destroy(list);
     }
 
+    int cached_list_usable = 0;
+    int safemode_off = 0;
+
     BaseIpToUrl cached;
     public void onChosenCallback(GameObject list, int chosenIndex) {
 
         if (chosenIndex >= this.ips.Count) {
-            console.text += "Selected cached data...\n";
-            useLocalUser();
-            
-            Destroy(list);
-            return;
+            if (chosenIndex == this.ips.Count + safemode_off) {
+                console.text += "Selected Safe Mode...\n";
+                useSafeModeUser();
+
+                Destroy(list);
+                return;
+            }
+
+            if (chosenIndex == this.ips.Count)
+            {
+                console.text += "Selected Cached Mode...\n";
+                useLocalUser();
+
+                Destroy(list);
+                return;
+            }
+
         }
 
         selectInterface(ips[chosenIndex]);
@@ -209,7 +226,14 @@ public class NetworkInformationSearcher : MonoBehaviour
             {
                 lpc.addOption(ip.Address.ToString() + "/" + ip.IPv4Mask.ToString());
             }
-            lpc.addOption("Use chached checklists");
+
+            if (MarkdownManager.AnyLocalChecklists()) {
+
+                safemode_off = 1;
+                lpc.addOption("Saved Checklists");
+            }
+
+            lpc.addOption("Safe Mode");
             lpc.onOptionChosen = onChosenCallback;
         }
         else if (ips.Count == 1)
@@ -233,6 +257,12 @@ public class NetworkInformationSearcher : MonoBehaviour
 
     void useLocalUser() {
         currentUser = "local";
+        updateSingleton = true;
+    }
+
+    void useSafeModeUser()
+    {
+        currentUser = "__SAFE_MODE__";
         updateSingleton = true;
     }
 
@@ -315,9 +345,9 @@ public class NetworkInformationSearcher : MonoBehaviour
             {
                 if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    //if (ip.IPv4Mask.ToString().StartsWith("255.255.255.")) {
+                    if (ip.IPv4Mask.ToString().StartsWith("255.255.255.")) {
                         ips.Add(ip);
-                    //}
+                    }
                     //console.text+=("IP: " + ip.Address) +"/";
                     //console.text += ("" + ip.IPv4Mask) + "\n";
                 }
@@ -373,8 +403,8 @@ public class NetworkInformationSearcher : MonoBehaviour
         if (currentUser != null) { 
             if(userRetrieved) {
                 userRetrieved = false;
-                UserData data = JsonUtility.FromJson<UserData>(jsonResponse);
-                currentUser = data.user;
+                UserResponse data = JsonUtility.FromJson<UserResponse>(jsonResponse);
+                currentUser = data.user.username;
                 hasCoonected = true;
                 updateSingleton = true;
                 
@@ -402,18 +432,14 @@ public class NetworkInformationSearcher : MonoBehaviour
 
         }
         else {
+
             console.text += "starting without server...\n";
             NetworkDataSingleton.Instance.startNoServer(currentUser);
         }
 
     }
 
-    private IEnumerator WaitAndLoadScene(float waitTime) {
-        yield return new WaitForSeconds(waitTime);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("V1");
-        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync("InitializationScreen");
-    }
-
+    
     private int port = 53535;
 
     IEnumerator getCurrentUser() {

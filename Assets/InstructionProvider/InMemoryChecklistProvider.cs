@@ -21,7 +21,7 @@ namespace Assets.InstructionProvider
 
         bool ready = false;
 
-        void IChecklistProvider.signalDownload()
+        IEnumerator IChecklistProvider.signalDownload()
         {
             checklists = new Dictionary<string, ChecklistGroup>();
 
@@ -29,7 +29,7 @@ namespace Assets.InstructionProvider
                 ChecklistGroup cessna172rg = new ChecklistGroup();
 
                 InstructionDTO takeoff = new InstructionDTO("Take-OFF", "Take-OFF");
-                takeoff.addTask("Flaps", "10 degrees");
+                takeoff.addTask("Flaps", "0 degrees");
                 takeoff.addTask("Carb h.", "OFF");
                 takeoff.addTask("LDG Light", "ON");
                 takeoff.addTask("Flight controls", "FREE");
@@ -115,7 +115,7 @@ namespace Assets.InstructionProvider
                 afterLanding.id = 1234144; // Unique ID
 
                 InstructionDTO engineStartup = new InstructionDTO("ENGINE START-UP", "ENGINE START-UP");
-
+                engineStartup.id = 1234145; // Unique ID
                 engineStartup.addTask("Mixture", "RICH");
                 engineStartup.addTask("Propeller", "HIGH RPM");
                 engineStartup.addTask("Carb h.", "OFF");
@@ -130,7 +130,7 @@ namespace Assets.InstructionProvider
                 engineStartup.addTask("Radio", "ON");
                 engineStartup.addTask("XPDR", "STB / ALT");
 
-                engineStartup.id = 1234145; // Unique ID
+               
 
                 cessna172rg.instructions.Add(engineStartup.id, engineStartup);
 
@@ -172,6 +172,8 @@ namespace Assets.InstructionProvider
                 checklists.Add("Generic Car", acar);
             }
             reandomth();
+
+            yield return null;
         }
 
         public void reandomth() {
