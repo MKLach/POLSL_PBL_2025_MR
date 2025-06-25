@@ -138,7 +138,7 @@ public class MainMenuMainScript : MonoBehaviour
                 lpc.addOption(key.shortTitle);
             }
             lpc.onOptionChosen = onChecklistSelected;
-            lpc.GetComponent<RectTransform>().localPosition = new Vector3(-8, -1.75f - 0.0f * (index+1), 0);
+            lpc.GetComponent<RectTransform>().localPosition = new Vector3(-10, -1.75f - 0.0f * (index+1), 0);
 
             addPanel(lpc);
 
@@ -164,7 +164,7 @@ public class MainMenuMainScript : MonoBehaviour
             selected = groups.instructions.Values.ToArray()[index-1];
 
             ListPanelController lpc = taskInChecklsit.GetComponent<ListPanelController>();
-            lpc.GetComponent<RectTransform>().localPosition = new Vector3(-12, -1.75f - 0.0f * (index + 1), 0);
+            lpc.GetComponent<RectTransform>().localPosition = new Vector3(-14, -1.75f - 0.0f * (index + 1), 0);
 
 
             lpc.setTitle("Proceed?");
@@ -176,7 +176,7 @@ public class MainMenuMainScript : MonoBehaviour
 
             taskListV1 = Instantiate(readOnlyListPrefab, mainPage.transform);
             ListPanel lpcRO = taskListV1.GetComponent<ListPanel>();
-            lpcRO.GetComponent<RectTransform>().localPosition = new Vector3(-12, -3f, 0);
+            lpcRO.GetComponent<RectTransform>().localPosition = new Vector3(-14, -3f, 0);
             lpcRO.setTitle(selected.shortTitle);
             foreach (var task in selected.tasks) {
 

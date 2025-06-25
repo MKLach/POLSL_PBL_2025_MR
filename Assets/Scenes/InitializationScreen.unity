@@ -998,7 +998,7 @@ Transform:
   m_GameObject: {fileID: 98232716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.652, y: -0.771, z: 0.42}
+  m_LocalPosition: {x: 0.652, y: -0.771, z: 0.856}
   m_LocalScale: {x: 0.075, y: 0.075, z: 0.075}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10189,6 +10189,14 @@ PrefabInstance:
     - target: {fileID: 3215808988324899735, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331952058621640016, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331952058621640016, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3.27
       objectReference: {fileID: 0}
     - target: {fileID: 3594720624088217064, guid: f95f9dbaba0986941ad2601432ab56df, type: 3}
       propertyPath: m_Colors.m_ColorMultiplier

@@ -410,7 +410,7 @@ public class CurrentInstructionSingleton : MonoBehaviour
         checklistController=checklistController.restore(checklistController.current().taskIndex - 1);
 
         recalcHistory();
-
+        updateTextOutput();
     }
 
    

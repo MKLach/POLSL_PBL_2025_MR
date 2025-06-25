@@ -212,12 +212,12 @@ public class NetworkInformationSearcher : MonoBehaviour
 
         scanForNetworkInterfaces();
 
-        if (ips.Count > 1)
+        if (ips.Count > 0)
         {
             console.text += "More than one network interface present...\nOpening dialog, please select...\n";
             GameObject panel1 = Instantiate(listPanelPrefab, pageContainerParent.transform);
             panel1.name = "chosev1";
-            panel1.GetComponent<RectTransform>().localPosition = new Vector3(-14, 0, 0);
+            panel1.GetComponent<RectTransform>().localPosition = new Vector3(-10, 0, 0);
 
             ListPanelController lpc = panel1.GetComponent<ListPanelController>();
             lpc.setTitle("Network Interfaces");
@@ -236,14 +236,32 @@ public class NetworkInformationSearcher : MonoBehaviour
             lpc.addOption("Safe Mode");
             lpc.onOptionChosen = onChosenCallback;
         }
-        else if (ips.Count == 1)
-        {
-            console.text += "One Interfaces present, selecting it...\n";
-            selectInterface(ips[0]);
-        }
         else {
             console.text += "No Network Interfaces present, loading chached data...\n";
-            useLocalUser();
+
+            GameObject panel1 = Instantiate(listPanelPrefab, pageContainerParent.transform);
+            panel1.name = "chosev1";
+            panel1.GetComponent<RectTransform>().localPosition = new Vector3(-10, 0, 0);
+
+            ListPanelController lpc = panel1.GetComponent<ListPanelController>();
+            lpc.setTitle("Network Interfaces");
+
+            foreach (UnicastIPAddressInformation ip in ips)
+            {
+                lpc.addOption(ip.Address.ToString() + "/" + ip.IPv4Mask.ToString());
+            }
+
+            if (MarkdownManager.AnyLocalChecklists())
+            {
+
+                safemode_off = 1;
+                lpc.addOption("Saved Checklists");
+            }
+
+            lpc.addOption("Safe Mode");
+            lpc.onOptionChosen = onChosenCallback;
+
+
             //console.text += "Setting user as 'local'\n";
 
             //console.text += "changing scene in 4 seconds...\n";

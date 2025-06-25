@@ -98,7 +98,7 @@ MonoBehaviour:
   m_ChildAlignment: 2
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 12, y: 0.32}
+  m_CellSize: {x: 12, y: 0.42}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc47c4178269314092963eb3d0a30b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreInput: 0
 --- !u!1001 &5954403771416294215
 PrefabInstance:
   m_ObjectHideFlags: 0
