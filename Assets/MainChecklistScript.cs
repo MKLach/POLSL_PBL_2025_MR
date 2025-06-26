@@ -12,15 +12,24 @@ public class MainChecklistScript : MonoBehaviour
     void Start()
     {
         st = Time.time;
+
+
+        
+
         CurrentInstructionSingleton.Instance.setTransformReferences(mc, l, r);
+
+
+
+
+
     }
 
     void Update()
     {
-
-        if (InputAbstractionLayer.Instance.GetMouseButtonDown(2).queryTrue)
+        InputAbstractionLayer.InputState input = InputAbstractionLayer.Instance.GetMouseButtonDown(2);
+        if (input.queryTrue)
         {
-            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone();
+            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone(input);
         }
 
         if (InputAbstractionLayer.Instance.GetMouseButtonDown(1).queryTrue)

@@ -12,14 +12,23 @@ using System.Linq;
 using System.IO;
 using System.Net;
 using System.Text;
+using lch.com.mkl.lch.variable;
+using lch.com.mkl.lch;
+using lch.com.mkl.lch.script;
+using com.mkl.lch;
+using static UnityEditorInternal.VersionControl.ListControl;
+using UnityEngine.InputSystem.LowLevel;
 
 [Serializable]
-public class Task { 
-
+public class Task {
+    public string title;
+    public string desc;
 }
 
 [Serializable]
-public class Checklist { 
+public class Checklist {
+    List<Task> tasks = new List<Task>();
+
 
 }
 
@@ -81,6 +90,7 @@ public class ChecklistController {
 
     public string startedAtDateTime;
     public string currentDateTime;
+
 
     public ChecklistController(int taskIndex) {
         previous = new List<ChecklistController>();
@@ -226,11 +236,31 @@ public class CurrentInstructionSingleton : MonoBehaviour
     }
 
 
-
+    string lastState = null;
     // Update is called once per frame
     void Update()
     {
+
+        if (lchSupported) {
+
+            if (currentTaskPanel.gameObject.active) {
+                currentTaskPanel.gameObject.SetActive(false);
+            }
+            
+            if(lastState != NetworkDataSingleton.Instance.currentState && NetworkDataSingleton.Instance.currentState != null)
+            {
+
+                notifyStateChange(NetworkDataSingleton.Instance.currentState);
+
+
+
+            }
+            lastState = NetworkDataSingleton.Instance.currentState;
+        }
         
+
+
+
     }
 
     void Awake()
@@ -246,15 +276,36 @@ public class CurrentInstructionSingleton : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
 
     bool done = false;
-
+    bool canbenotified = false;
+    public bool lchSupported;
     public void setInstruction(InstructionDTO ins)
     {
+        canbenotified = false;
         done = false;
         this.instructionDTO= ins;
         checklistController = checklistController.restart();
         //currentTaskIndex = 0;
+
+        if (ins is ChecklistLCH) {
+            lchSupported = true;
+            Lch.instance.resetVariables();
+            
+            Variable list = new Variable("checklist", this.instructionDTO, Lch.objectMeta);
+            Lch.instance.addVariable("checklist", list);
+            Lch.instance.addVariable("reason", new Variable("reason", 0x0, Lch.intMeta));
+            
+
+            Interpreter lchInterpreter = new Interpreter();
+            ((ChecklistLCH)ins).es = lchInterpreter.parseScript(((ChecklistLCH)ins).lch);
+
+            Lch.instance.executeScript(((ChecklistLCH)ins).es);
+            canbenotified = true;
+
+
+        }
     }
 
     public TaskDTO getCurrentTask() {
@@ -314,7 +365,7 @@ public class CurrentInstructionSingleton : MonoBehaviour
         }
     }
 
-    public void setCurrentTaskAsDone()
+    public void setCurrentTaskAsDone(InputAbstractionLayer.InputState input)
     {
         if(done) { return; }
         //int lod = latestDoneIndex;
@@ -323,9 +374,10 @@ public class CurrentInstructionSingleton : MonoBehaviour
 
         int nextIndex = checklistController.current().taskIndex + 1;
 
+
         if (nextIndex >= instructionDTO.tasks.Count) { nextIndex -= 1; } else {
             
-            checklistController.persist(mainCameraTransform, leftHandTransform, rightHandTransform, 0x0, nextIndex);
+            checklistController.persist(mainCameraTransform, leftHandTransform, rightHandTransform, input.abstractSource, nextIndex);
 
         }
 
@@ -346,8 +398,10 @@ public class CurrentInstructionSingleton : MonoBehaviour
 
             string payload = JsonUtility.ToJson(log);
 
+            lchSupported = false;
+            lastState = null;
             StartCoroutine(NetworkDataSingleton.Instance.SendChecklistLog(payload));
-
+            
 
             StartCoroutine(intoTheMainMenu());
         }
@@ -368,7 +422,7 @@ public class CurrentInstructionSingleton : MonoBehaviour
         yield return new WaitForSeconds(1);
         yield return new WaitForSeconds(1);
         int toUnload = SceneManager.GetActiveScene().buildIndex;
-
+        
         SceneManager.LoadScene(1);
         SceneManager.UnloadSceneAsync(toUnload);
 
@@ -413,5 +467,30 @@ public class CurrentInstructionSingleton : MonoBehaviour
         updateTextOutput();
     }
 
-   
+    public void notifyStateChange(string newState)
+    {
+        if (this.instructionDTO is ChecklistLCH && canbenotified)
+        {
+            //lchSupported = true;
+            //Lch.instance.resetVariables();
+
+            Variable list = new Variable("checklist", this.instructionDTO, Lch.objectMeta);
+            Lch.instance.addOverrideVariable("checklist", list);
+            Lch.instance.addOverrideVariable("reason", new Variable("reason", 0x1, Lch.intMeta));
+            Lch.instance.addOverrideVariable("state", new Variable("state", newState, Lch.stringMeta));
+            Lch.instance.addOverrideVariable("index", new Variable("index", checklistController.taskIndex, Lch.intMeta));
+
+            //Interpreter lchInterpreter = new Interpreter();
+            //((ChecklistLCH)this.instructionDTO).es = lchInterpreter.parseScript(((ChecklistLCH)this.instructionDTO).lch);
+
+            Lch.instance.executeScript(((ChecklistLCH)this.instructionDTO).es);
+
+
+            recalcHistory();
+            updateTextOutput();
+        }
+
+
+
+    }
 }

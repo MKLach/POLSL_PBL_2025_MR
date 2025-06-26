@@ -79,6 +79,16 @@ namespace Assets.InstructionProvider
 
         }
 
+        void saveLCH(MDFileResponse resp)
+        {
+            if (resp.lch != "NONE") {
+                string thepath = Path.Combine(basePath, resp.plane, resp.checklist_id + ".lch");
+                File.WriteAllText(thepath, resp.lch);
+            }
+            
+
+        }
+
         void DirectoryLogic(string thepath) {
 
             if (!Directory.Exists(thepath))
@@ -108,7 +118,7 @@ namespace Assets.InstructionProvider
                 {
                     MarkdownCompiler.Compile(resp.content);
                     save(resp);
-
+                    saveLCH(resp);
 
                 } catch (Exception e)
                 {

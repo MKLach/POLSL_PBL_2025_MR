@@ -43,5 +43,6 @@ namespace Assets.Responses
         public string plane;
         public string checklist_id;
         public string content;
+        public string lch;
     }
 }

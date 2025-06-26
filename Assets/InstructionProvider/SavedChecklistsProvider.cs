@@ -57,9 +57,38 @@ namespace Assets.InstructionProvider
                 foreach (string mdFile in mdFiles)
                 {
                     string content = File.ReadAllText(mdFile); ;
+                    bool isLch = false;
+                    string[] lchCont = null;
+                    try {
+
+
+
+                        lchCont = File.ReadAllLines(mdFile.Substring(0, mdFile.Length - 3) + ".lch"); 
+                        
+                        isLch = true;
+                    
+                    }catch(Exception e)
+                    {
+
+
+                    }
+
                     try { 
+
+
                         InstructionDTO instructionDTO = MarkdownCompiler.Compile(content);
-                        chgrp.instructions.Add(instructionDTO.id, instructionDTO);
+
+                        if (isLch)
+                        {
+                            chgrp.instructions.Add(instructionDTO.id, new ChecklistLCH(lchCont, instructionDTO));
+
+                        }
+                        else {
+                            chgrp.instructions.Add(instructionDTO.id, instructionDTO);
+                        }
+                        
+                        
+                       
                     } catch (Exception ex)
                     {
 

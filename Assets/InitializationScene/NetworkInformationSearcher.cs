@@ -21,6 +21,10 @@ using Oculus.Interaction;
 using Unity.VisualScripting;
 using Assets.Responses;
 using Assets.markdown;
+using com.mkl.lch;
+using lch.com.mkl.lch.script;
+using lch.com.mkl.lch;
+using lch.com.mkl.lch.variable;
 
 public class NetworkInformationSearcher : MonoBehaviour
 {
@@ -207,6 +211,43 @@ public class NetworkInformationSearcher : MonoBehaviour
         start = Time.time;
 
         cached_urls = LoadFromFile("url_cache");
+        console.text += "lch support mode\n";
+        console.text += "lch env please present:\n";
+
+        if (Lch.instance == null) {
+            new Lch();
+        }
+        
+
+        string[] lines = {
+            "string unity_test;",
+            "string ver;",
+            "env->name[unity_test];",
+            "env->version[ver];",
+            "unity_test = unity_test + \", version \" + ver;",
+            "console->println(unity_test);",
+            "console->print(console);",
+            "console->println(\" as console printer\");"
+
+        };
+        MRConsoleIntegration cl = new MRConsoleIntegration(console);
+
+        Variable result = new Variable("console", cl, Lch.objectMeta);
+        Lch.instance.addVariable("console", result);
+
+        
+
+        Interpreter lchInterpreter = new Interpreter();
+
+        ExecutableScript es = lchInterpreter.parseScript(lines);
+
+
+       
+
+        Lch.instance.executeScript(es);
+
+        //console.text += result.getAsString() + "\n";
+
 
         console.text += $"Cached ips: {cached_urls.ips.Count}\n";
 

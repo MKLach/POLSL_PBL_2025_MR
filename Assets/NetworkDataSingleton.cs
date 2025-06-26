@@ -11,6 +11,9 @@ using System.IO;
 using System.Net;
 using UnityEngine.SceneManagement;
 using System.Text;
+using Assets.Responses;
+using UnityEngine.InputSystem.Utilities;
+using Unity.VisualScripting;
 
 public class NetworkDataSingleton : MonoBehaviour
 {
@@ -117,6 +120,18 @@ public class NetworkDataSingleton : MonoBehaviour
 
         while (isRunning) {
             
+
+            if(CurrentInstructionSingleton.Instance != null)
+            {
+                if (CurrentInstructionSingleton.Instance.lchSupported) {
+
+                    currentState = getCurrentState();
+                   
+                }
+
+
+            }
+
             //getCurrentUser();
             Thread.Sleep(1000);
         }
@@ -171,6 +186,38 @@ public class NetworkDataSingleton : MonoBehaviour
         SceneManager.UnloadSceneAsync(toUnload);
 
         yield return null;
+    }
+
+    [Serializable]
+    public class resp {
+        public string state;
+        public string success;
+    }
+
+    public string currentState;
+
+
+    string getCurrentState() {
+
+        string jsonResponse = "";
+        string url = baseUrl + "/state";
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        request.Method = "GET";
+
+
+        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        {
+
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                jsonResponse = reader.ReadToEnd();
+                resp r =JsonUtility.FromJson<resp>(jsonResponse);
+
+                return r.state;
+
+            }
+
+        }
     }
 
     void getCurrentUser()

@@ -196,6 +196,12 @@ public class MainMenuMainScript : MonoBehaviour
 
         if (index == 0)
         {
+
+
+
+
+
+
             CurrentInstructionSingleton.Instance.setInstruction(selected);
 
             StartCoroutine(intoTheChecklistScreen());

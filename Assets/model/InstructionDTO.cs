@@ -12,6 +12,7 @@ namespace Assets.model
         public int id;
         public string shortTitle;
         public string title;
+        
 
         public List<TaskDTO> tasks;
 
@@ -22,6 +23,14 @@ namespace Assets.model
             this.shortTitle = shortTitle;
             tasks = new List<TaskDTO>();
         }
+
+        public InstructionDTO(InstructionDTO i) { 
+            this.id = i.id;
+            this.shortTitle = i.shortTitle;
+            this.title = i.title;
+            this.tasks = i.tasks;
+        }
+        
 
         public void addTask(string shortTitle, string description) { 
             tasks.Add(new TaskDTO(shortTitle, shortTitle, description));    
