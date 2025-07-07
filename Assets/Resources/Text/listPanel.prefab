@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc47c4178269314092963eb3d0a30b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iconPrefab: {fileID: 3882704630902032591, guid: 12aafd1335af04f4d8ad9a9738b6d79c, type: 3}
   ignoreInput: 0
 --- !u!1001 &5954403771416294215
 PrefabInstance:

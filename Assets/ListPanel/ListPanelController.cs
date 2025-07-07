@@ -10,6 +10,7 @@ using UnityEngine.TextCore.Text;
 public class ListPanelController : MonoBehaviour
 {
     private GameObject textPrefab;
+    private GameObject iconPrefab;
 
     public float ignoreInput = 0;
     public Action<GameObject, int> onOptionChosen;
@@ -69,9 +70,39 @@ public class ListPanelController : MonoBehaviour
             textPrefab = Resources.Load<GameObject>(prefabPath);
         }
 
+        
+
         GameObject option = Instantiate(textPrefab, transform);
         option.name = this.gameObject.name + "_" + (transform.childCount - 1);
         option.GetComponent<TextMeshProUGUI>().text = text;
+    }
+
+    public void addOption(string text, string iconName)
+    {
+        //if (textPrefab == null)
+        //{
+         //   string prefabPath = "Text/defaultSystemTextPrefabWithIcon";
+        //    textPrefab = Resources.Load<GameObject>(prefabPath);
+        //}
+
+        if (iconPrefab == null)
+        {
+            string prefabPath = "Text/defaultSystemTextPrefabWithIcon";
+            iconPrefab = Resources.Load<GameObject>(prefabPath);
+        }
+
+        GameObject option = Instantiate(iconPrefab, transform);
+        option.name = this.gameObject.name + "_" + (transform.childCount - 1);
+        option.GetComponent<TextMeshProUGUI>().text = text;
+        option.GetComponentInChildren<SetSourceImage>().setIconByString(iconName);
+        option.transform.GetChild(0).GetComponent<RectTransform>().transform.localPosition += new Vector3(-6.247f, 0, 0);
+
+        //GameObject iconObj = Instantiate(iconPrefab, option.transform);
+        //iconObj.name = this.gameObject.name + "_" + (transform.childCount - 1) + "_icon";
+        //iconObj.GetComponent<SetSourceImage>().setIconByString(iconName);
+        //iconObj.transform.localScale = new Vector3(-0.05f, 1, 1);
+        //iconObj.transform.position = new Vector3(option.transform.localPosition);
+
     }
 
 

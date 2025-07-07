@@ -425,6 +425,8 @@ public class NetworkInformationSearcher : MonoBehaviour
                 currentUser = data.user.username;
                 hasCoonected = true;
                 updateSingleton = true;
+                Debug.Log(data.user.color);
+                StyleSingleton.Instance.SetGlobalStyle(data.user.color);
                 
             }
 

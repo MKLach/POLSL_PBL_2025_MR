@@ -43,7 +43,7 @@ public class MainMenuMainScript : MonoBehaviour
         lpc.setTitle("Main Menu");
 
         foreach (var key in NetworkDataSingleton.Instance.getChecklists().Keys) {
-            lpc.addOption(key + " - checklists");
+            lpc.addOption(key + " - checklists", "default");
         }
 
         lpc.addOption("Disable Gestrues");
@@ -135,7 +135,7 @@ public class MainMenuMainScript : MonoBehaviour
 
             foreach (var key in groups.instructions.Values)
             {
-                lpc.addOption(key.shortTitle);
+                lpc.addOption(key.shortTitle, key.iconName);
             }
             lpc.onOptionChosen = onChecklistSelected;
             lpc.GetComponent<RectTransform>().localPosition = new Vector3(-10, -1.75f - 0.0f * (index+1), 0);

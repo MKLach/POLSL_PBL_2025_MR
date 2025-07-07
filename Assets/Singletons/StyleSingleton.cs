@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class StyleSingleton : MonoBehaviour
@@ -28,5 +29,13 @@ public class StyleSingleton : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetGlobalStyle(string colori)
+    {
+        if (ColorUtility.TryParseHtmlString(colori, out Color color))
+        {
+            textColor = color;
+        }
     }
 }

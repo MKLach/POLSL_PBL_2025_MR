@@ -11,14 +11,14 @@ namespace Assets.model
     {
         public int id;
         public string shortTitle;
-        public string title;
+        public string iconName;
 
         public List<TaskDTO> tasks;
 
         public InstructionDTO() { }
 
-        public InstructionDTO(string shortTitle, string title) {
-            this.title = title;
+        public InstructionDTO(string shortTitle, string icon) {
+            this.iconName = icon;
             this.shortTitle = shortTitle;
             tasks = new List<TaskDTO>();
         }

@@ -74,7 +74,7 @@ public class INPUT_EVENT_LSITENER_INSTRUCTION : MonoBehaviour
         if (rFistStateChanged || lFistStateChanged || keyboardM) {
             timeout = Time.time;
             notificationSystem.notify("Task Completed", "" + (CurrentInstructionSingleton.Instance.getCurrentTaskIndex()+1) + "/"+ CurrentInstructionSingleton.Instance.instructionDTO.tasks.Count, 2);
-            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone();
+            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone(new InputAbstractionLayer.InputState() { queryTrue=false, abstractSource=0x0 });
 
             if (CurrentInstructionSingleton.Instance.hasBeenCompleted())
             {

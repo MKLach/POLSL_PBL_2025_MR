@@ -136,7 +136,7 @@ public class InteractiveJournal : MonoBehaviour
         for (int i = 0; i < tasks.Count; i++)
         {
             TaskButton taskButton = Instantiate(taskButtonPrefab, taskButtonsContainer);
-            taskButton.InitializeIns(i + 1, tasks[i].title, this, tasks[i]);
+            taskButton.InitializeIns(i + 1, tasks[i].iconName, this, tasks[i]);
 
 
 
@@ -198,7 +198,7 @@ public class InteractiveJournal : MonoBehaviour
         Debug.Log(CurrentInstructionSingleton.Instance);
 
         CurrentInstructionSingleton.Instance.setInstruction(ins);
-        detailPageTitleText.text = ins.title;
+        detailPageTitleText.text = ins.iconName;
 
         string txt = "";
         int i = 0;

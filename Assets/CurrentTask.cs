@@ -16,7 +16,7 @@ public class CurrentTask : MonoBehaviour
             desc.text = "NoneD";
         }
         else {
-            title.text = instructionSingleton.instructionDTO.title;
+            title.text = instructionSingleton.instructionDTO.iconName;
             nextTask(instructionSingleton.getCurrentTask());
         }
     }

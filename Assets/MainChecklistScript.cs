@@ -17,10 +17,10 @@ public class MainChecklistScript : MonoBehaviour
 
     void Update()
     {
-
-        if (InputAbstractionLayer.Instance.GetMouseButtonDown(2).queryTrue)
+        var ialis = InputAbstractionLayer.Instance.GetMouseButtonDown(2);
+        if (ialis.queryTrue)
         {
-            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone();
+            CurrentInstructionSingleton.Instance.setCurrentTaskAsDone(ialis);
         }
 
         if (InputAbstractionLayer.Instance.GetMouseButtonDown(1).queryTrue)

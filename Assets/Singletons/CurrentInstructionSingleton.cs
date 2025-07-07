@@ -314,7 +314,7 @@ public class CurrentInstructionSingleton : MonoBehaviour
         }
     }
 
-    public void setCurrentTaskAsDone()
+    public void setCurrentTaskAsDone(InputAbstractionLayer.InputState inputState)
     {
         if(done) { return; }
         //int lod = latestDoneIndex;
@@ -325,7 +325,7 @@ public class CurrentInstructionSingleton : MonoBehaviour
 
         if (nextIndex >= instructionDTO.tasks.Count) { nextIndex -= 1; } else {
             
-            checklistController.persist(mainCameraTransform, leftHandTransform, rightHandTransform, 0x0, nextIndex);
+            checklistController.persist(mainCameraTransform, leftHandTransform, rightHandTransform, inputState.abstractSource, nextIndex);
 
         }
 
